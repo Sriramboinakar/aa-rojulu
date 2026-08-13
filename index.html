@@ -65,30 +65,26 @@ transition:opacity .2s;
 #creator .hide-sm{display:none}
 }
 
-/* ═══ LIVE STATS (time + visitors) ═══ */
-#stats{
-position:fixed;top:max(2rem,calc(env(safe-area-inset-top) + 1.4rem));left:50%;
-transform:translateX(-50%);z-index:790;
-display:flex;align-items:center;gap:.7rem;
-padding:.4rem .8rem;border-radius:999px;
+/* ═══ LIVE CLOCK (left side) ═══ */
+#clockbox{
+position:fixed;top:max(2rem,calc(env(safe-area-inset-top) + 1.4rem));left:max(1rem,env(safe-area-inset-left));
+z-index:790;
+display:flex;align-items:center;gap:.45rem;
+padding:.42rem .8rem;border-radius:999px;
 background:rgba(11,9,16,.55);
 backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
 border:1px solid rgba(232,168,64,.16);
 font-family:'Noto Sans Telugu',sans-serif;
 color:rgba(245,230,200,.85);
+font-size:.78rem;letter-spacing:.04em;
 white-space:nowrap;
 animation:rise 1.1s ease 1s both;
 }
-#stats .s-item{display:flex;align-items:center;gap:.4rem;font-size:.72rem;letter-spacing:.03em}
-#stats .s-item svg{width:13px;height:13px;fill:var(--gold);flex:none}
-#stats .s-item .v{color:var(--gold);font-weight:600;font-variant-numeric:tabular-nums}
-#stats .s-dot{
-width:4px;height:4px;border-radius:50%;background:rgba(232,168,64,.35);flex:none;
-}
+#clockbox svg{width:13px;height:13px;fill:var(--gold);flex:none}
+#clockbox .c{color:var(--gold);font-weight:600;font-variant-numeric:tabular-nums}
 @media(max-width:640px){
-#stats{top:max(1.7rem,calc(env(safe-area-inset-top) + 1.1rem));gap:.5rem;padding:.35rem .65rem}
-#stats .s-item{font-size:.62rem}
-#stats .s-item svg{width:11px;height:11px}
+#clockbox{top:max(1.7rem,calc(env(safe-area-inset-top) + 1.1rem));left:max(.7rem,env(safe-area-inset-left));font-size:.66rem}
+#clockbox svg{width:11px;height:11px}
 }
 
 /* ═══ HERO (single screen) ═══ */
@@ -322,17 +318,10 @@ sriramboinakar@gmail.com
 </a>
 </div>
 
-<!-- ═══════ LIVE STATS ═══════ -->
-<div id="stats">
-<div class="s-item">
+<!-- ═══════ LIVE CLOCK ═══════ -->
+<div id="clockbox">
 <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 10.4 4.1 2.4-.7 1.2-4.9-2.9V7h1.5z"/></svg>
-<span id="clock">--:--:--</span>
-</div>
-<span class="s-dot"></span>
-<div class="s-item">
-<svg viewBox="0 0 24 24"><path d="M16 11c1.7 0 3-1.3 3-3s-1.3-3-3-3-3 1.3-3 3 1.3 3 3 3zm-8 0c1.7 0 3-1.3 3-3S9.7 5 8 5 5 6.3 5 8s1.3 3 3 3zm0 2c-2.3 0-7 1.2-7 3.5V19h14v-2.5C15 14.2 10.3 13 8 13zm8 0c-.3 0-.7 0-1.1.1 1.2.8 2.1 2 2.1 3.4V19h6v-2.5c0-2.3-4.7-3.5-7-3.5z"/></svg>
-<span><span class="v" id="visitors">…</span> visitors</span>
-</div>
+<span class="c" id="clock">--:--</span>
 </div>
 
 <!-- ═══════ SINGLE SCREEN HERO ═══════ -->
@@ -517,28 +506,12 @@ if(yt)yt.setVolume(parseInt(volSlider.value));
 const clock=document.getElementById('clock');
 function tick(){
 try{
-const now=new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour12:true,hour:'2-digit',minute:'2-digit',second:'2-digit'});
+const now=new Date().toLocaleTimeString('en-IN',{timeZone:'Asia/Kolkata',hour12:true,hour:'2-digit',minute:'2-digit'});
 clock.textContent=now;
 }catch(e){}
 }
 tick();
 setInterval(tick,1000);
-})();
-
-/* ═══ VISITOR COUNTER ═══ */
-(function(){
-const el=document.getElementById('visitors');
-function fetchCount(){
-fetch('https://countapi.mileshilliard.com/api/v1/hit/aa-rojulu-visitors')
-.then(r=>r.json())
-.then(d=>{
-if(d&&d.value!==undefined){
-el.textContent=Number(d.value).toLocaleString('en-IN');
-}
-})
-.catch(()=>{});
-}
-fetchCount();
 })();
 })();
 </script>
