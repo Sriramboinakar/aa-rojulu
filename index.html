@@ -220,31 +220,32 @@ font-variant-numeric:tabular-nums;
 }
 #audio-bar .t-time.dur{color:rgba(232,168,64,.85)}
 #seek{
-flex:1;position:relative;height:22px;display:flex;align-items:center;
+flex:1;position:relative;height:28px;display:flex;align-items:center;
 cursor:pointer;touch-action:none;-webkit-tap-highlight-color:transparent;
 }
 #seek .track{
-position:absolute;left:0;right:0;height:4px;border-radius:999px;
+position:absolute;left:0;right:0;top:50%;height:3px;
+transform:translateY(-50%);border-radius:999px;
 background:rgba(232,168,64,.22);
 }
 #seek .fill{
-position:absolute;left:0;top:0;bottom:0;width:0%;
-border-radius:999px;
+position:absolute;left:0;top:50%;width:0%;height:3px;
+transform:translateY(-50%);border-radius:999px;
 background:linear-gradient(90deg,#f0b954,#dc9f34);
 }
 #seek .handle{
-position:absolute;top:50%;left:0%;width:14px;height:14px;border-radius:50%;
+position:absolute;top:50%;left:0%;width:8px;height:8px;border-radius:50%;
 background:linear-gradient(180deg,#f0b954,#dc9f34);
-box-shadow:0 2px 10px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.25);
-transform:translate(-50%,-50%) scale(.6);
-opacity:0;transition:transform .25s,opacity .25s;
+box-shadow:0 1px 5px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.2);
+transform:translate(-50%,-50%) scale(.5);
+opacity:0;transition:transform .2s,opacity .2s;
 pointer-events:none;
 }
 #seek:hover .handle,#seek.dragging .handle{
 opacity:1;transform:translate(-50%,-50%) scale(1);
 }
-#seek.dragging .track{height:6px}
-#seek.dragging .fill{height:6px}
+#seek:hover .track,#seek.dragging .track{height:3px}
+#seek:hover .fill,#seek.dragging .fill{height:3px}
 
 /* ═══ SEPARATE VOLUME BUTTON + POPUP ═══ */
 #vol-btn{
