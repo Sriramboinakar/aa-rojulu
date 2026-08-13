@@ -40,6 +40,31 @@ position:fixed;inset:0;z-index:499;pointer-events:none;
 background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,5,.55) 100%);
 }
 
+/* ═══ CREATOR CREDIT (top) ═══ */
+#creator{
+position:fixed;top:0;left:0;right:0;z-index:800;
+display:flex;align-items:center;justify-content:center;gap:.9rem;
+padding:max(.55rem,env(safe-area-inset-top)) 1rem .55rem;
+background:rgba(11,9,16,.55);
+backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+border-bottom:1px solid rgba(232,168,64,.12);
+font-family:'Noto Sans Telugu',sans-serif;font-size:.72rem;color:rgba(245,230,200,.75);
+letter-spacing:.03em;white-space:nowrap;
+}
+#creator .sep{
+width:3px;height:3px;border-radius:50%;background:var(--gold);flex:none;
+}
+#creator a{
+color:var(--gold);text-decoration:none;display:inline-flex;align-items:center;gap:.25rem;
+transition:opacity .2s;
+}
+#creator a:hover{opacity:.75}
+#creator svg{width:12px;height:12px;fill:currentColor;flex:none}
+@media(max-width:640px){
+#creator{font-size:.62rem;gap:.55rem}
+#creator .hide-sm{display:none}
+}
+
 /* ═══ HERO (single screen) ═══ */
 #hero{
 position:relative;width:100%;height:100vh;height:100dvh;
@@ -107,7 +132,8 @@ transition:transform .3s,box-shadow .3s;
 animation:rise 1.1s ease 1.15s both;
 }
 #hero .hero-play:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 16px 50px rgba(232,168,64,.5)}
-#hero .hero-play .ico{font-size:1.05rem;line-height:1}
+#hero .hero-play .ico{display:flex;align-items:center;justify-content:center}
+#hero .hero-play .ico svg{width:16px;height:16px;fill:currentColor;display:block}
 @keyframes rise{0%{opacity:0;transform:translateY(26px)}100%{opacity:1;transform:translateY(0)}}
 
 /* ═══ AUDIO BAR (no video, controls only) ═══ */
@@ -145,14 +171,16 @@ width:36px;height:36px;border-radius:50%;
 display:flex;align-items:center;justify-content:center;
 opacity:.75;transition:opacity .2s,background .2s;
 }
+#audio-bar .ctrl svg{width:18px;height:18px;fill:currentColor;display:block}
 #audio-bar .ctrl:hover{opacity:1;background:rgba(232,168,64,.12)}
-#audio-bar .ctrl.skip{font-size:1.4rem;opacity:.6}
+#audio-bar .ctrl.skip{opacity:.7}
 #audio-bar .ctrl.skip:hover{opacity:1}
 #audio-bar .ctrl.pause{
 background:linear-gradient(180deg,#f0b954,#dc9f34);color:#1a1305;
-font-size:1.1rem;width:40px;height:40px;opacity:1;
+width:40px;height:40px;opacity:1;
 box-shadow:0 4px 18px rgba(232,168,64,.35);
 }
+#audio-bar .ctrl.pause svg{width:20px;height:20px}
 
 /* ═══ SEPARATE VOLUME BUTTON + POPUP ═══ */
 #vol-btn{
@@ -160,7 +188,6 @@ position:fixed;right:max(1rem,env(safe-area-inset-right));
 bottom:max(1.4rem,calc(env(safe-area-inset-bottom) + 1.4rem));
 z-index:710;width:46px;height:46px;border-radius:50%;cursor:pointer;
 display:flex;align-items:center;justify-content:center;
-font-size:1.25rem;color:var(--cream);
 background:rgba(15,12,22,.88);
 backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
 border:1px solid rgba(232,168,64,.22);
@@ -168,6 +195,7 @@ box-shadow:0 10px 34px rgba(0,0,0,.5);
 opacity:0;pointer-events:none;transform:scale(.6);
 transition:opacity .4s,transform .4s,background .2s;
 }
+#vol-btn svg{width:22px;height:22px;fill:var(--gold)}
 #vol-btn.show{opacity:1;pointer-events:auto;transform:scale(1)}
 #vol-btn:hover{background:rgba(232,168,64,.14)}
 #vol-pop{
@@ -203,6 +231,7 @@ font-family:'Noto Sans Telugu',sans-serif;font-size:.7rem;color:var(--muted);
 letter-spacing:.08em;
 }
 #vol-pop .vol-ico{font-size:1.05rem;color:var(--gold)}
+#vol-pop .vol-ico svg{width:18px;height:18px;fill:var(--gold);display:block}
 
 @media(max-width:640px){
 html,body{height:100%}
@@ -252,6 +281,21 @@ transition-duration:.01ms!important;
 <div id="grain"></div>
 <div id="vignette"></div>
 
+<!-- ═══════ CREATOR CREDIT ═══════ -->
+<div id="creator">
+<span>Created by Sriram</span>
+<span class="sep"></span>
+<a href="mailto:sriramboinakar@gmail.com">
+<svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></svg>
+sriramboinakar@gmail.com
+</a>
+<span class="sep"></span>
+<a href="tel:+918978131267">
+<svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1z"/></svg>
++91 8978131267
+</a>
+</div>
+
 <!-- ═══════ SINGLE SCREEN HERO ═══════ -->
 <section id="hero">
 <div class="bg"></div>
@@ -262,7 +306,7 @@ transition-duration:.01ms!important;
 <div class="subtitle">మళ్ళీ ఒక్కసారి.</div>
 <div class="en-label">A Telugu childhood memory</div>
 <div class="divider"></div>
-<button class="hero-play" id="hero-play"><span class="ico">▶</span> వినండి</button>
+<button class="hero-play" id="hero-play"><span class="ico"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span> వినండి</button>
 </div>
 </section>
 
@@ -270,15 +314,25 @@ transition-duration:.01ms!important;
 <div id="audio-bar">
 <div class="eq"><span></span><span></span><span></span><span></span><span></span></div>
 <div class="label" id="track-name">ఆ రోజులు… Radio</div>
-<button class="ctrl skip" id="prev-btn" aria-label="Previous">⏮</button>
-<button class="ctrl pause" id="play-btn" aria-label="Play/Pause">▶</button>
-<button class="ctrl skip" id="next-btn" aria-label="Next">⏭</button>
+<button class="ctrl skip" id="prev-btn" aria-label="Previous">
+<svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5l-9 7 9 7z"/></svg>
+</button>
+<button class="ctrl pause" id="play-btn" aria-label="Play/Pause">
+<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+</button>
+<button class="ctrl skip" id="next-btn" aria-label="Next">
+<svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5l9 7-9 7z"/></svg>
+</button>
 </div>
 
 <!-- ═══════ SEPARATE VOLUME CONTROL ═══════ -->
-<button id="vol-btn" aria-label="Volume">🔊</button>
+<button id="vol-btn" aria-label="Volume">
+<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>
+</button>
 <div id="vol-pop">
-<span class="vol-ico">🔊</span>
+<span class="vol-ico">
+<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"/></svg>
+</span>
 <input type="range" id="vol-slider" min="0" max="100" value="80" aria-label="Volume">
 <span class="vol-val" id="vol-val">80%</span>
 </div>
@@ -391,10 +445,12 @@ const d=yt.getVideoData();
 if(d&&d.title)trackName.textContent=d.title;
 }catch(e){}
 }
+const PLAY_SVG='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+const PAUSE_SVG='<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+
 function updateUI(){
-const icon=isPlaying?'⏸':'▶';
-heroIcon.textContent=icon;
-playBtn.textContent=icon;
+heroIcon.innerHTML=isPlaying?PAUSE_SVG:PLAY_SVG;
+playBtn.innerHTML=isPlaying?PAUSE_SVG:PLAY_SVG;
 }
 
 heroPlay.addEventListener('click',toggle);
