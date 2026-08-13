@@ -153,11 +153,56 @@ background:linear-gradient(180deg,#f0b954,#dc9f34);color:#1a1305;
 font-size:1.1rem;width:40px;height:40px;opacity:1;
 box-shadow:0 4px 18px rgba(232,168,64,.35);
 }
-#audio-bar .vol{display:flex;align-items:center;gap:6px;padding-left:.2rem}
-#audio-bar .vol .vol-icon{font-size:.8rem;opacity:.5}
-#audio-bar .vol input[type=range]{
-width:60px;accent-color:var(--gold);height:3px;cursor:pointer;
+
+/* ═══ SEPARATE VOLUME BUTTON + POPUP ═══ */
+#vol-btn{
+position:fixed;right:max(1rem,env(safe-area-inset-right));
+bottom:max(1.4rem,calc(env(safe-area-inset-bottom) + 1.4rem));
+z-index:710;width:46px;height:46px;border-radius:50%;cursor:pointer;
+display:flex;align-items:center;justify-content:center;
+font-size:1.25rem;color:var(--cream);
+background:rgba(15,12,22,.88);
+backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+border:1px solid rgba(232,168,64,.22);
+box-shadow:0 10px 34px rgba(0,0,0,.5);
+opacity:0;pointer-events:none;transform:scale(.6);
+transition:opacity .4s,transform .4s,background .2s;
 }
+#vol-btn.show{opacity:1;pointer-events:auto;transform:scale(1)}
+#vol-btn:hover{background:rgba(232,168,64,.14)}
+#vol-pop{
+position:fixed;right:max(1rem,env(safe-area-inset-right));
+bottom:calc(4.4rem + env(safe-area-inset-bottom));
+z-index:711;padding:.7rem .9rem;border-radius:16px;
+display:flex;flex-direction:column;align-items:center;gap:.55rem;
+background:rgba(15,12,22,.95);
+backdrop-filter:blur(26px);-webkit-backdrop-filter:blur(26px);
+border:1px solid rgba(232,168,64,.22);
+box-shadow:0 16px 50px rgba(0,0,0,.6);
+opacity:0;pointer-events:none;transform:translateY(8px);
+transition:opacity .3s,transform .3s;
+}
+#vol-pop.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+#vol-pop input[type=range]{
+width:120px;accent-color:var(--gold);height:4px;cursor:pointer;
+-webkit-appearance:none;appearance:none;background:rgba(232,168,64,.2);
+border-radius:4px;outline:none;
+}
+#vol-pop input[type=range]::-webkit-slider-thumb{
+-webkit-appearance:none;appearance:none;width:16px;height:16px;border-radius:50%;
+background:linear-gradient(180deg,#f0b954,#dc9f34);
+border:none;box-shadow:0 2px 8px rgba(0,0,0,.5);
+}
+#vol-pop input[type=range]::-moz-range-thumb{
+width:16px;height:16px;border-radius:50%;border:none;
+background:linear-gradient(180deg,#f0b954,#dc9f34);
+box-shadow:0 2px 8px rgba(0,0,0,.5);
+}
+#vol-pop .vol-val{
+font-family:'Noto Sans Telugu',sans-serif;font-size:.7rem;color:var(--muted);
+letter-spacing:.08em;
+}
+#vol-pop .vol-ico{font-size:1.05rem;color:var(--gold)}
 
 @media(max-width:640px){
 html,body{height:100%}
@@ -181,12 +226,10 @@ gap:.4rem .5rem;
 #audio-bar .eq span{width:2.5px}
 #audio-bar .ctrl{width:32px;height:32px}
 #audio-bar .ctrl.pause{width:38px;height:38px}
-#audio-bar .vol input[type=range]{width:44px}
-#audio-bar .vol-icon{font-size:.7rem}
+#vol-btn{bottom:max(1.1rem,calc(env(safe-area-inset-bottom) + 1.1rem))}
 }
 @media(max-width:380px){
 #audio-bar .label{display:none}
-#audio-bar .vol input[type=range]{width:40px}
 }
 
 /* ═══ HIDDEN PLAYER (audio stream, top-left, invisible) ═══ */
@@ -230,10 +273,14 @@ transition-duration:.01ms!important;
 <button class="ctrl skip" id="prev-btn" aria-label="Previous">⏮</button>
 <button class="ctrl pause" id="play-btn" aria-label="Play/Pause">▶</button>
 <button class="ctrl skip" id="next-btn" aria-label="Next">⏭</button>
-<div class="vol">
-<span class="vol-icon">🔊</span>
-<input type="range" id="vol-slider" min="0" max="100" value="80" aria-label="Volume">
 </div>
+
+<!-- ═══════ SEPARATE VOLUME CONTROL ═══════ -->
+<button id="vol-btn" aria-label="Volume">🔊</button>
+<div id="vol-pop">
+<span class="vol-ico">🔊</span>
+<input type="range" id="vol-slider" min="0" max="100" value="80" aria-label="Volume">
+<span class="vol-val" id="vol-val">80%</span>
 </div>
 
 <!-- ═══════ HIDDEN YOUTUBE PLAYER ═══════ -->
@@ -252,6 +299,9 @@ const playBtn=document.getElementById('play-btn');
 const prevBtn=document.getElementById('prev-btn');
 const nextBtn=document.getElementById('next-btn');
 const volSlider=document.getElementById('vol-slider');
+const volBtn=document.getElementById('vol-btn');
+const volPop=document.getElementById('vol-pop');
+const volVal=document.getElementById('vol-val');
 const trackName=document.getElementById('track-name');
 
 let yt=null;
@@ -313,6 +363,7 @@ if(!started){
 loadApi();
 started=true;
 bar.classList.add('visible');
+volBtn.classList.add('show');
 setTimeout(()=>{
 if(yt&&!isPlaying){try{yt.playVideo()}catch(e){}}
 },1200);
@@ -350,7 +401,21 @@ heroPlay.addEventListener('click',toggle);
 playBtn.addEventListener('click',toggle);
 prevBtn.addEventListener('click',prev);
 nextBtn.addEventListener('click',next);
-volSlider.addEventListener('input',()=>{if(yt)yt.setVolume(parseInt(volSlider.value))});
+
+/* separate volume button + popup */
+function updateVolLabel(){volVal.textContent=volSlider.value+'%'}
+volBtn.addEventListener('click',()=>{
+volPop.classList.toggle('show');
+});
+document.addEventListener('click',(e)=>{
+if(!e.target.closest('#vol-btn')&&!e.target.closest('#vol-pop')){
+volPop.classList.remove('show');
+}
+});
+volSlider.addEventListener('input',()=>{
+updateVolLabel();
+if(yt)yt.setVolume(parseInt(volSlider.value));
+});
 })();
 </script>
 </body>
