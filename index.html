@@ -369,8 +369,55 @@ sriramboinakar@gmail.com
 <div id="yt-holder"><div id="yt-player"></div></div>
 
 <script>
-/* ═══ CONFIG ═══ */
-const PLAYLIST_ID = "PLNCzJijQ_Tx4";
+/* ═══ CONFIG: full 46-song playlist ═══ */
+const SONGS=[
+{id:"zxRilmBZ7FU",title:"Manchi Manasulu – Jabilli Kosam (Bhanuchandar)"},
+{id:"Llw7cXHmDDo",title:"Aarya – Edo Priyaragam (Allu Arjun)"},
+{id:"idQBr9vJAGQ",title:"Manmadhudu – Gundello Emundo"},
+{id:"fdEzDqiSC3U",title:"Nuvvostanante – Niluvaddam Ninne (Siddharth)"},
+{id:"5MUlhgm5npM",title:"Pelli Chesukundam – Kokila Kokila"},
+{id:"thkVoSWcQRU",title:"Pournami – Muvvala Navvakala (Prabhas, Trisha)"},
+{id:"T89is-9kmKE",title:"Nuvvu Vasthavani – Patala Pallakivai (Nagarjuna)"},
+{id:"ZB32sI3kqEk",title:"Govinda Govinda – Andama Anduma (Nagarjuna, Sridevi)"},
+{id:"XqYRhDD9d88",title:"Uma Chandi Gowri Shankarula – Emito Ee Maya (NTR)"},
+{id:"fw8SslNVi5I",title:"Criminal – Telusa Manasa (SP Balu, Chitra)"},
+{id:"ttzSe_Hp11E",title:"Preminchukundam Raa – Alachudu Premalokam (Venkatesh)"},
+{id:"WiqbYpARrZU",title:"Preminchukundam Raa – Pellikala Vachesindhe (Venkatesh)"},
+{id:"T2tmlLojh3U",title:"Premikudu – Andamaina Premarani (Prabhu Deva)"},
+{id:"0mJTZRX7AfE",title:"Nirnayam – Hello Guru Prema Kosam (Nagarjuna)"},
+{id:"zloL0fdu5aM",title:"Jagadeka Veerudu – Abbanee Tiyyani (Chiranjeevi)"},
+{id:"XG6fhfHk9zg",title:"Kshana Kshanam – Jaamu Rathiri (Venkatesh)"},
+{id:"SrtFVq_-nu0",title:"Maya Bazar – Lahiri Lahiri (NTR)"},
+{id:"dL-YGeA2C7Y",title:"Rowdy Alludu – Chiluka Kshemamaa (Chiranjeevi)"},
+{id:"W9mf72vp24E",title:"Yamudiki Mogudu – Andam Hindolam (Chiranjeevi)"},
+{id:"pF-cNEi3oJw",title:"Gang Leader – Vaana Vaana Velluvaye (Chiranjeevi)"},
+{id:"hxvUiz6s4Gk",title:"Gharana Mogudu – Bangaru Kodi Petta (Chiranjeevi)"},
+{id:"O_L1rhEdLes",title:"Prema – Eenade Edho Ayyindi (Venkatesh)"},
+{id:"TqO199fiOC4",title:"Raja – Edo Oka Ragam (Venkatesh, Soundarya)"},
+{id:"_u3QevWcPmI",title:"Premikudu – O Cheliya (AR Rahman)"},
+{id:"BQ3dsdeSpag",title:"Daddy – Vana Vana (Chiranjeevi, Simran)"},
+{id:"jB5QfgaU6cU",title:"Merupu Kalalu – Vennelave Vennelave (Prabhu Deva)"},
+{id:"bnN3fdHbGTU",title:"Avvai Shanmugi – Rukku Rukku (Kamal Haasan)"},
+{id:"fAn1WMEdSfg",title:"April 1 Vidudala – Chukkalu Themmenna"},
+{id:"pWPHlppi2i4",title:"Gulabi – Ee Velalo Neevu"},
+{id:"PoKBaHMuYAs",title:"Ohho Megamala – Bhale Ramudu"},
+{id:"97uVDPOibYw",title:"Premikudu – Urvasi Urvasi (Prabhu Deva)"},
+{id:"k9zn57J2EKE",title:"Evvaru Emanna – (Nithin, Sadha)"},
+{id:"QDyAcBjBP8c",title:"Malliswari – Nee Navvule Vennelani (Venkatesh)"},
+{id:"tSvPR3fXHbg",title:"Nuvvu Naaku Nachav – O Priyatama (Venkatesh)"},
+{id:"7Wlz9z5AHtQ",title:"Premikudu – Andamaina Premarani 4K"},
+{id:"3TNmQ1XM2fM",title:"Ninne Pelladatha (Nagarjuna, Tabu)"},
+{id:"WDjIpZj-6Ko",title:"Hello Brother – Priya Raagale (Nagarjuna)"},
+{id:"zed5SZ2EiY0",title:"Tholiprema – Ee Manase (Pawan Kalyan)"},
+{id:"FvcoRTJK_J8",title:"Ninne Pelladatha – Yeto Vellipoyindi Manasu"},
+{id:"1ssBzlc4fWE",title:"Jagadeka Veerudu – Yamaho Nee (Chiranjeevi)"},
+{id:"UHv-erz_oQQ",title:"April 1 Vidudala – Chukklau Themmana"},
+{id:"VumsdDIOY9A",title:"Roja – Na Cheli Rojave"},
+{id:"0TW_AFTNa3I",title:"Aahwanam – Super Hit Song (Srikanth)"},
+{id:"5EyQzK811AM",title:"Geethanjali – O Priya (Nagarjuna)"},
+{id:"p-1gysnu4MM",title:"Bombay – Kannanule (Arvind Swamy)"},
+{id:"3I2lolrLThc",title:"Aapadbandhavudu – Chukkallara Choopullara (Chiranjeevi)"}
+];
 
 /* ═══ YOUTUBE AUDIO PLAYER ═══ */
 (function(){
@@ -389,44 +436,76 @@ const trackName=document.getElementById('track-name');
 let yt=null;
 let started=false;
 let isPlaying=false;
+let currentIndex=0;
+
+/* ═══ PERSISTENCE: resume from where user left off ═══ */
+const LS_KEY='aaRojuluPlayer';
+function loadState(){
+try{
+const s=JSON.parse(localStorage.getItem(LS_KEY)||'null');
+if(s&&typeof s==='object')return s;
+}catch(e){}
+return null;
+}
+function saveState(){
+try{
+const s={index:currentIndex,time:yt?yt.getCurrentTime():0,volume:parseInt(volSlider.value),playing:isPlaying,ts:Date.now()};
+localStorage.setItem(LS_KEY,JSON.stringify(s));
+}catch(e){}
+}
+
+function total(){return SONGS.length}
 
 window.onYouTubeIframeAPIReady=function(){
 yt=new YT.Player('yt-player',{
 height:'236',width:'420',
 playerVars:{
-listType:'playlist',
-list:PLAYLIST_ID,
 controls:0,
 rel:0,
 playsinline:1,
 disablekb:1,
-loop:1,
-playlist:PLAYLIST_ID
+loop:1
 },
 events:{
 onReady:function(){
+const saved=loadState();
+if(saved&&typeof saved.volume==='number'){
+volSlider.value=saved.volume;
+updateVolLabel();
+}
 const vol=parseInt(volSlider.value);
 try{yt.setVolume(vol);}catch(e){}
-try{yt.setShuffle(true);}catch(e){}
-/* pick a random song so every refresh starts somewhere different */
+let startIdx=0;
+if(saved&&typeof saved.index==='number'){
+startIdx=((saved.index%total())+total())%total();
+}
+currentIndex=startIdx;
+/* load all 46 songs explicitly so none are ever dropped */
+try{yt.loadPlaylist(SONGS.map(s=>s.id),startIdx);}catch(e){}
 setTimeout(()=>{
 try{
-const list=yt.getPlaylist();
-if(list&&list.length>0){
-const r=Math.floor(Math.random()*list.length);
-yt.playVideoAt(r);
+if(saved&&typeof saved.time==='number'&&saved.time>1){
+yt.seekTo(saved.time,true);
 }
 }catch(e){}
-},400);
+/* restore playing state if it was playing before */
+if(saved&&saved.playing){
+setTimeout(()=>{try{yt.playVideo()}catch(e){}},250);
+}
+updateTrack();
+},600);
 },
 onStateChange:function(e){
 if(e.data===YT.PlayerState.PLAYING){
 isPlaying=true;
+try{currentIndex=yt.getPlaylistIndex();}catch(e){}
 updateUI();
 updateTrack();
+saveState();
 }else if(e.data===YT.PlayerState.PAUSED||e.data===YT.PlayerState.ENDED){
 isPlaying=false;
 updateUI();
+saveState();
 }
 },
 onError:function(){trackName.textContent='Press play again';}
@@ -448,29 +527,47 @@ bar.classList.add('visible');
 volBtn.classList.add('show');
 setTimeout(()=>{
 if(yt&&!isPlaying){try{yt.playVideo()}catch(e){}}
+saveState();
 },1200);
 }else{
 if(yt)yt.playVideo();
 isPlaying=true;
 updateUI();
+saveState();
 }
 }
 function pause(){
 if(yt)yt.pauseVideo();
 isPlaying=false;
 updateUI();
+saveState();
 }
 function toggle(){
 if(isPlaying){pause()}
 else{play()}
 }
-function next(){if(yt)yt.nextVideo();isPlaying=true;updateUI()}
-function prev(){if(yt)yt.previousVideo();isPlaying=true;updateUI()}
+function goTo(i){
+const idx=((i%total())+total())%total();
+currentIndex=idx;
+if(yt){
+try{yt.playVideoAt(idx);}catch(e){}
+}
+isPlaying=true;
+updateUI();
+updateTrack();
+saveState();
+}
+function next(){goTo(currentIndex+1)}
+function prev(){goTo(currentIndex-1)}
 
 function updateTrack(){
 try{
+const s=SONGS[currentIndex];
+if(s&&s.title)trackName.textContent=(currentIndex+1)+'. '+s.title;
+else{
 const d=yt.getVideoData();
 if(d&&d.title)trackName.textContent=d.title;
+}
 }catch(e){}
 }
 const PLAY_SVG='<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
@@ -499,6 +596,14 @@ volPop.classList.remove('show');
 volSlider.addEventListener('input',()=>{
 updateVolLabel();
 if(yt)yt.setVolume(parseInt(volSlider.value));
+saveState();
+});
+
+/* keep position synced every 5s + on leaving the page */
+setInterval(saveState,5000);
+window.addEventListener('pagehide',saveState);
+document.addEventListener('visibilitychange',function(){
+if(document.hidden){saveState();}
 });
 
 /* ═══ LIVE CLOCK (IST) ═══ */
