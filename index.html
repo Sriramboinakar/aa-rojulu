@@ -2,9 +2,11 @@
 <html lang="te">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ఆ రోజులు…">
 <title>ఆ రోజులు… — A Telugu Childhood Memory</title>
 <meta name="description" content="ఆ రోజులు… మళ్ళీ ఒక్కసారి. Step into a nostalgic Telugu village from the late 1990s and early 2000s.">
 <meta name="theme-color" content="#0b0910">
@@ -17,11 +19,15 @@
 --bg:#0b0910;--cream:#f5e6c8;--gold:#e8a840;--muted:#9a8a6f;
 }
 html,body{height:100%}
+html{-webkit-text-size-adjust:100%}
 body{
 background:var(--bg);color:var(--cream);
 font-family:'Noto Sans Telugu','Noto Serif Telugu',sans-serif;
-overflow:hidden;-webkit-font-smoothing:antialiased;
+overflow-x:hidden;-webkit-font-smoothing:antialiased;
+-webkit-tap-highlight-color:transparent;
+height:100%;
 }
+button{touch-action:manipulation}
 
 /* ═══ OVERLAYS ═══ */
 #grain{
@@ -37,14 +43,22 @@ background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,5,.55) 100
 /* ═══ HERO (single screen) ═══ */
 #hero{
 position:relative;width:100%;height:100vh;height:100dvh;
+min-height:100dvh;
 display:flex;align-items:center;justify-content:center;text-align:center;
 overflow:hidden;
 }
 #hero .bg{
 position:absolute;inset:0;
 background-image:url('use this image.png');
-background-size:cover;background-position:center 38%;
+background-size:cover;
+background-position:center 35%;
 animation:hero-zoom 8s ease-out both;
+}
+@media(orientation:portrait){
+#hero .bg{background-position:center 30%}
+}
+@media(orientation:landscape){
+#hero .bg{background-position:center 45%}
 }
 @keyframes hero-zoom{0%{transform:scale(1.12)}100%{transform:scale(1)}}
 #hero .overlay{
@@ -146,8 +160,33 @@ width:60px;accent-color:var(--gold);height:3px;cursor:pointer;
 }
 
 @media(max-width:640px){
-#audio-bar{border-radius:22px}
+html,body{height:100%}
+#hero .content{padding:0 1.1rem}
+#hero .kicker{font-size:.95rem;letter-spacing:.16em}
+#hero h1{font-size:clamp(2.4rem,13vw,4.2rem)}
+#hero .subtitle{font-size:clamp(.95rem,4vw,1.25rem)}
+#hero .hero-play{margin-top:1.6rem;padding:.8rem 1.8rem}
+
+/* audio bar: fit narrow screens, wrap into one row */
+#audio-bar{
+bottom:max(0.9rem,env(safe-area-inset-bottom));
+left:.7rem;right:.7rem;transform:translateY(190%);
+justify-content:center;flex-wrap:wrap;
+padding:.5rem .7rem;border-radius:18px;
+gap:.4rem .5rem;
+}
+#audio-bar.visible{transform:translateY(0)}
+#audio-bar .label{max-width:82px;font-size:.72rem}
+#audio-bar .eq{height:14px}
+#audio-bar .eq span{width:2.5px}
+#audio-bar .ctrl{width:32px;height:32px}
+#audio-bar .ctrl.pause{width:38px;height:38px}
 #audio-bar .vol input[type=range]{width:44px}
+#audio-bar .vol-icon{font-size:.7rem}
+}
+@media(max-width:380px){
+#audio-bar .label{display:none}
+#audio-bar .vol input[type=range]{width:40px}
 }
 
 /* ═══ HIDDEN PLAYER (audio stream, top-left, invisible) ═══ */
